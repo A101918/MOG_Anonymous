@@ -1,14 +1,34 @@
-# MOG Anonymous — fused score verification
+# MOG Anonymous — fused frame-level scores
 
-Paper Table-1 fusion setup (λ_base / λ_motion / λ_anchor = 0.3 / 0.4 / 0.7, θ_trigger = 0.4).
+Per-dataset directories with frame-level anomaly scores for MSAD, ShanghaiTech, UCF_Crime, and XD_Violence.
 
-Per-dataset directories contain `fused_scores/` and `fused_scores_smoothed/` frame-level `.npy` files.
+## Layout
 
-## Micro frame-level AUROC (concatenated)
+Each dataset folder contains:
 
-| Dataset | fused_scores | fused_scores_smoothed |
-|---------|-------------:|----------------------:|
-| MSAD | 0.848394 | 0.878817 |
-| ShanghaiTech | 0.758743 | 0.789671 |
-| UCF_Crime | 0.779910 | 0.842624 |
-| XD_Violence | 0.885959 | 0.919126 |
+- `gt_concat.npy` — concatenated frame-level ground truth
+- `fused_scores/` — per-video F2 fusion scores (pre-smoothing)
+- `fused_scores_smoothed/` — per-video F2 fusion scores with Gaussian smoothing
+
+## Evaluate micro frame-level AUROC
+
+Requires Python 3 with `numpy` and `scikit-learn`.
+
+```bash
+python3 eval_score_verification_concat_aucroc.py
+```
+
+Optional flags:
+
+```bash
+python3 eval_score_verification_concat_aucroc.py --root .
+python3 eval_score_verification_concat_aucroc.py --datasets MSAD UCF_Crime
+python3 eval_score_verification_concat_aucroc.py --strict-length
+```
+
+The script concatenates per-video `.npy` files (sorted by filename), compares them to `gt_concat.npy`, and writes:
+
+- `aucroc_concat_eval.json`
+- `aucroc_concat_eval.csv`
+
+Results are also printed as a table on stdout.
