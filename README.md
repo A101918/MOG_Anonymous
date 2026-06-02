@@ -1,4 +1,4 @@
-# MOG Anonymous — fused frame-level & final scores
+# MOG Anonymous — fused & final scores
 
 Per-dataset directories with frame-level anomaly scores for MSAD, ShanghaiTech, UCF_Crime, and XD_Violence.
 
